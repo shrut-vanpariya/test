@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Executor</title>
+</head>
+<body>
+  <form id="commandForm">
+    <label for="command">Enter command:</label>
+    <textarea type="text" id="command" name="command"></textarea>
+    <button type="submit">Execute</button>
+  </form>
+
+  <pre id="output"></pre>
+
+  <script>
+    document.getElementById('commandForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const command = document.getElementById('command').value;
+      const response = await fetch('https://web-sys-info.onrender.com/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ command }),
+      });
+
+      const result = await response.json();
+      document.getElementById('output').innerText = `stdout: ${result.stdout}\n\nstderr: ${result.stderr}`;
+    });
+  </script>
+</body>
+</html>
